@@ -1460,6 +1460,44 @@ function displayResultsByCategory(weight) {
                 alert('Please enter a valid weight.');
             }
         });
+        // Define the cache name and resources to cache
+const CACHE_NAME = 'pediatric-calculator-cache';
+const urlsToCache = [
+  window.location.href,
+  // Add any other resources you want to cache
+];
+
+// Create a cache instance
+caches.open(CACHE_NAME)
+  .then(cache => {
+    console.log('Opened cache');
+    return cache.addAll(urlsToCache);
+  })
+  .then(() => {
+    console.log('Resources cached');
+  })
+  .catch(error => {
+    console.error('Error caching resources:', error);
+  });
+
+// Add event listener for online/offline changes
+window.addEventListener('online', () => {
+  console.log('User is online');
+});
+
+window.addEventListener('offline', () => {
+  console.log('User is offline');
+  // Serve cached resources when offline
+  caches.match(window.location.href)
+    .then(response => {
+      if (response) {
+        return response;
+      }
+    })
+    .catch(error => {
+      console.error('Error serving cached resource:', error);
+        });
+      })
     </script>
 </body>
 </html>
